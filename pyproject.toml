@@ -4,4 +4,9 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "cag",
+]
+
+[tool.uv.sources]
+cag = { git = "https://github.com/panalexeu/cag.git" }
