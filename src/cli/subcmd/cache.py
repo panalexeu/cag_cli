@@ -37,8 +37,6 @@ def file(
                 formatter.__call__()
                 formatter.save(Path(INIT_DIR))
 
-        print('Files were successfully processed')
-
 
 def _check_file_type(path: str) -> str:
     with open(path, 'rb') as file:
