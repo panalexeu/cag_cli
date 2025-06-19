@@ -6,7 +6,10 @@ import typer
 from typer import Exit, Option
 from rich import print
 
+from .subcmd import cache
+
 app = typer.Typer()
+app.add_typer(cache.app, name='cache')
 
 INIT_DIR = './.cag'
 
