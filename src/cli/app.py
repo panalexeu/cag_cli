@@ -1,6 +1,7 @@
 import os
 import shutil
 from typing import Annotated
+from pathlib import Path
 
 import typer
 from typer import Exit, Option
@@ -19,9 +20,10 @@ def init():
     if not os.path.exists(INIT_DIR):
         os.mkdir(INIT_DIR)
         print('[bold green]`.cag`[/bold green] directory was initialized.')
-    else:
-        print('[bold green]`.cag`[/bold green] directory is already initialized.')
-        Exit(code=-1)
+        raise Exit()
+
+    print('[bold green]`.cag`[/bold green] directory is already initialized.')
+    raise Exit(code=-1)
 
 
 @app.command(
@@ -33,10 +35,25 @@ def de_init(
     """Removes a `.cag` directory, with all cached content inside."""
     if not os.path.exists(INIT_DIR):
         print('[bold green]`.cag`[/bold green] directory is not initialized.')
-        Exit(code=-1)
-    elif force:
+        raise Exit(code=-1)
+
+    if force:
         shutil.rmtree(INIT_DIR)
         print('[bold green]`.cag`[/bold green] directory was removed.')
+
+
+@app.command(
+    name='list'
+)
+def list():
+    """Lists `.cag` directory content."""
+    if not os.path.exists(INIT_DIR):
+        print('[bold green]`.cag`[/bold green] directory is not initialized.')
+        raise Exit(code=-1)
+
+    for path in Path(INIT_DIR).iterdir():
+        if path.is_file():
+            print(path.stem)
 
 
 if __name__ == '__main__':
