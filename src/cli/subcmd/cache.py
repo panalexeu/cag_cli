@@ -5,6 +5,7 @@ from cag.data_source.text import TextDataSource
 from cag.formatters.xml_format import XMLCtxFormatter
 from magic import from_buffer
 from typer import Typer, Exit
+from rich import print
 
 from src.cli.constants import INIT_DIR
 
@@ -35,6 +36,8 @@ def file(
                 formatter = XMLCtxFormatter(ctx)
                 formatter.__call__()
                 formatter.save(Path(INIT_DIR))
+
+        print('Files were successfully processed')
 
 
 def _check_file_type(path: str) -> str:
