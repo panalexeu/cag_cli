@@ -2,7 +2,7 @@ import os.path
 from pathlib import Path
 
 from cag.data_source.text import TextDataSource
-from cag.formatters.xml_format import XMLCtxFormatter
+from cag.formatters.xml import XMLCtxFormatter
 from magic import from_buffer
 from typer import Typer, Exit
 from rich import print
