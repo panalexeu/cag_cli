@@ -34,7 +34,7 @@ def file(
     for path in paths:
         if path.is_file():
 
-            filetype = _check_file_type(path)
+            filetype = _check_file_type(path).lower()
 
             # process text files
             if 'text' in filetype:
@@ -47,7 +47,7 @@ def file(
                     api_key=openai
                 ).__call__(path)
             else:
-                ctx = None
+                continue
 
             formatter = XMLCtxFormatter(ctx)
             formatter.__call__()
