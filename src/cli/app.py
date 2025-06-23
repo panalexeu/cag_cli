@@ -8,6 +8,7 @@ from typer import Exit, Option
 from rich import print
 
 from src.cli.constants import INIT_DIR
+from src.services.app import merge as invk_merge
 from .subcmd import cache
 
 app = typer.Typer()
@@ -54,6 +55,26 @@ def list():
     for path in Path(INIT_DIR).iterdir():
         if path.is_file():
             print(path.stem)
+
+
+@app.command(
+    name='merge'
+)
+def merge(
+
+):
+    """Merges ``Context``s of ``.cag`` directory into one."""
+    if not os.path.exists(INIT_DIR):
+        print('[bold green]`.cag`[/bold green] directory is not initialized.')
+        raise Exit(code=-1)
+
+    paths = [p for p in Path(INIT_DIR).iterdir()]
+    invk_merge(
+        paths,
+        Path(INIT_DIR)
+    )
+
+    print('Merge complete')
 
 
 if __name__ == '__main__':

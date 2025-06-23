@@ -47,5 +47,4 @@ def store_context(
                 continue
 
             formatter = XMLCtxFormatter(ctx)
-            formatter.__call__()
             formatter.save(save_dir)
