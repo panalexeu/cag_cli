@@ -13,6 +13,7 @@ from cag.data_source import (
 )
 
 from src.cli.constants import INIT_DIR
+from src.services.cache import _get_files
 
 app = Typer(
     help='Processes and stores various data sources.'
@@ -34,7 +35,7 @@ def file(
     for path in paths:
         if path.is_file():
 
-            filetype = _check_file_type(path).lower()
+            filetype = from_file(path).lower()  # check file type
 
             # process text files
             if 'text' in filetype:
@@ -56,5 +57,20 @@ def file(
     print('[bold green]`.cag`[/bold green] was updated with the new cached context. ')
 
 
-def _check_file_type(path: Path) -> str:
-    return from_file(path)
+@app.command()
+def dir(
+        path: Path
+):
+    """Recursively process the dir by providing the path."""
+    if not os.path.exists(INIT_DIR):
+        print('[bold green]`.cag`[/bold green] directory is not initialized. '
+              'Use [bold green]`init`[/bold green] command to initialize the directory.')
+        raise Exit(code=-1)
+
+    if not path.is_dir():
+        print(f'[bold green]`{path}`[/bold green] is not a directory.')
+        raise Exit(code=-1)
+
+    # recursively extract all files in the directory
+    files = _get_files(path)
+
