@@ -4,11 +4,12 @@ from typing import Annotated
 from pathlib import Path
 
 import typer
-from typer import Exit, Option
+from typer import Exit, Option, Argument, progressbar
 from rich import print
 
 from src.cli.constants import INIT_DIR
 from src.services.app import merge as invk_merge
+from src.services.app import count_tokens
 from .subcmd import cache
 
 app = typer.Typer()
@@ -43,9 +44,7 @@ def de_init(
         print('[bold green]`.cag`[/bold green] directory was removed.')
 
 
-@app.command(
-    name='list'
-)
+@app.command()
 def list():
     """Lists `.cag` directory content."""
     if not os.path.exists(INIT_DIR):
@@ -57,12 +56,8 @@ def list():
             print(path.stem)
 
 
-@app.command(
-    name='merge'
-)
-def merge(
-
-):
+@app.command()
+def merge():
     """Merges ``Context``s of ``.cag`` directory into one."""
     if not os.path.exists(INIT_DIR):
         print('[bold green]`.cag`[/bold green] directory is not initialized.')
@@ -75,6 +70,25 @@ def merge(
     )
 
     print('Merge complete')
+
+
+@app.command()
+def count(
+        model: Annotated[str, Argument()] = 'gpt-4o-mini'
+):
+    """Counts token size of caches in ``.cag`` directory. Uses OpenAI tokenizer vocabulary."""
+    if not os.path.exists(INIT_DIR):
+        print('[bold green]`.cag`[/bold green] directory is not initialized.')
+        raise Exit(code=-1)
+
+    token_dict = {}
+    paths = [p for p in Path(INIT_DIR).iterdir()]
+    with progressbar(paths, len(paths)) as paths:
+        for path in paths:
+            if path.is_file():
+                token_dict[path.stem] = count_tokens(path, model)
+
+    print(token_dict)
 
 
 if __name__ == '__main__':
