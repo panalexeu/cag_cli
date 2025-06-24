@@ -9,42 +9,41 @@ from cag.data_source import (
 )
 
 
-def get_files(path: Path):
-    """Recursively get files from the directory and all subdirectories."""
+def get_paths(path: Path):
+    """Recursively get file paths from the directory and all subdirectories."""
 
     files = []
     for p in path.iterdir():
         if p.is_file():
             files.append(p)
         elif p.is_dir():
-            files.extend(get_files(p))
+            files.extend(get_paths(p))
 
     return files
 
 
 def store_context(
-        paths: list[Path],
+        path: Path,
         save_dir: Path,
         openai_api_key: str | None
 ):
     """Extracts, processes and stores provided files into cached ``Context``."""
-    for path in paths:
-        if path.is_file():
+    if path.is_file():
 
-            filetype = from_file(path).lower()  # check file type
+        filetype = from_file(path).lower()  # check file type
 
-            # process text files
-            if 'text' in filetype:
-                ctx = TextDataSource().__call__(path)
-            elif 'pdf' in filetype:
-                ctx = PDFDataSource().__call__(path)
-            elif 'image' in filetype:
-                ctx = ImgOpenAIDataSource(
-                    model='gpt-4.1-mini',
-                    api_key=openai_api_key
-                ).__call__(path)
-            else:
-                continue
+        # process text files
+        if 'text' in filetype:
+            ctx = TextDataSource().__call__(path)
+        elif 'pdf' in filetype:
+            ctx = PDFDataSource().__call__(path)
+        elif 'image' in filetype:
+            ctx = ImgOpenAIDataSource(
+                model='gpt-4.1-mini',
+                api_key=openai_api_key
+            ).__call__(path)
+        else:
+            return
 
-            formatter = XMLCtxFormatter(ctx)
-            formatter.save(save_dir)
+        formatter = XMLCtxFormatter(ctx)
+        formatter.save(save_dir)
