@@ -14,3 +14,10 @@ dependencies = [
 
 [tool.uv.sources]
 cag = { git = "https://github.com/panalexeu/cag.git" }
+
+[project.scripts]
+cli-cag = "cli.app:app"
+
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'

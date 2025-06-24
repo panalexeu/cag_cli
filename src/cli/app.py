@@ -7,9 +7,9 @@ import typer
 from typer import Exit, Option, Argument, progressbar
 from rich import print
 
-from src.cli.constants import INIT_DIR
-from src.services.app import merge as invk_merge
-from src.services.app import count_tokens
+from cli.constants import INIT_DIR
+from services.app import merge as invk_merge
+from services.app import count_tokens
 from .subcmd import cache
 
 app = typer.Typer()

@@ -5,8 +5,8 @@ from typing import Annotated
 from typer import Typer, Exit, Option, progressbar
 from rich import print
 
-from src.cli.constants import INIT_DIR
-from src.services.cache import get_paths, store_context
+from cli.constants import INIT_DIR
+from services.cache import get_paths, store_context
 
 app = Typer(
     help='Processes and stores various data sources.'
