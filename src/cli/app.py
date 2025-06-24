@@ -18,7 +18,7 @@ app.add_typer(cache.app, name='cache')
 
 @app.command()
 def init():
-    """Creates a `.cag` directory to store cached files content."""
+    """Creates a ``.cag`` directory to store cached files content."""
     if not os.path.exists(INIT_DIR):
         os.mkdir(INIT_DIR)
         print('[bold green]`.cag`[/bold green] directory was initialized.')
@@ -34,7 +34,7 @@ def init():
 def de_init(
         force: Annotated[bool, Option(prompt=True, )]
 ):
-    """Removes a `.cag` directory, with all cached content inside."""
+    """Removes a ``.cag`` directory, with all cached content inside."""
     if not os.path.exists(INIT_DIR):
         print('[bold green]`.cag`[/bold green] directory is not initialized.')
         raise Exit(code=-1)
@@ -46,7 +46,7 @@ def de_init(
 
 @app.command()
 def list():
-    """Lists `.cag` directory content."""
+    """Lists ``.cag`` directory content."""
     if not os.path.exists(INIT_DIR):
         print('[bold green]`.cag`[/bold green] directory is not initialized.')
         raise Exit(code=-1)
